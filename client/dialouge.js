@@ -1,15 +1,13 @@
-export default function dialogue(str, scene) {
-  scene.add
-    .text(16, 16, str, {
-      font: "18px monospace",
-      fill: "#eeeeee",
+export default function dialogue(str, scene, lastResult) {
+  if(lastResult){
+  lastResult.destroy()
+  }
+  let text = scene.add
+    .text(scene.scale.width/3, (scene.scale.height*6)/9, str, {
+      font: "18px Roboto Condensed",
+      fill: "#ffffff",
       padding: { x: 20, y: 10 },
       backgroundColor: "#000000"
     })
-    .setScrollFactor(0);
-
-    scene.input.keyboard.on("keydown_B", () => {
-      console.log("test");
-      return "bed";
-    });
+    .setScrollFactor(0)
 }

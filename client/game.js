@@ -4,13 +4,12 @@ import dialogueHandler from "./AISolutions.js";
 export default class Game extends Phaser.Scene {
   constructor() {
     super("Game");
-    this.cursors;
     this.dH;
   }
   preload() {
     this.load.image("tiles", "./client/assets/house_inside.png");
     this.load.tilemapTiledJSON("map", "./client/assets/RpgMap.json");
-    this.load.image("player", "./client/assets/player.png");
+    this.load.spritesheet("player", "./client/assets/player.png", {frameWidth: 24, frameHeight: 32});
   }
 
   create() {
@@ -24,53 +23,28 @@ export default class Game extends Phaser.Scene {
       obj => obj.name === "spawnPoint"
     );
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y);
-    console.log(this.player.sprite);
-
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createStaticLayer("belowPlayer", tileset, 0, 0);
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y);
     const worldLayer = map.createStaticLayer("worldLayer", tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ collides: true });
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y);
     const aboveLayer = map.createStaticLayer("abovePlayer", tileset, 0, 0);
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    worldLayer.renderDebug(debugGraphics, {
-      tileColor: null, // Color of non-colliding tiles
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-    });
+    const torchLayer = map.createStaticLayer('torchLayer', tileset, 0, 0)
+    worldLayer.setCollisionByProperty({ collides: true });
     // Phaser supports multiple cameras, but you can access the default camera like this:
     const camera = this.cameras.main;
-    this.dH = new dialogueHandler(this);
-
+    this.dH = new dialogueHandler(this, this.player, map, worldLayer);
+    
     camera.startFollow(this.player.sprite);
+    camera.setZoom(1.3)
     // Set up the arrows to control the camera
-    this.physics.add.collider(this.player, worldLayer);
-    this.cursors = this.input.keyboard.createCursorKeys();
+    this.physics.add.collider(this.player.sprite, worldLayer);
 
     // Help text that has a "fixed" position on the screen
   }
 
   update(time, delta) {
-    // Apply the controls to the camera each update tick of the game
     this.dH.update();
-    let speed = 175;
-    // Stop any previous movement from the last frame
-    this.player.sprite.setVelocity(0);
-
+    this.player.update();
     // Horizontal movement
-    if (this.cursors.left.isDown) {
-      this.player.sprite.setVelocityX(-speed);
-    }
-    if (this.cursors.right.isDown) {
-      this.player.sprite.setVelocityX(speed);
-    }
-    // Vertical movement
-    if (this.cursors.up.isDown) {
-      this.player.sprite.setVelocityY(-speed);
-    }
-    if (this.cursors.down.isDown) {
-      this.player.sprite.setVelocityY(speed);
-    }
   }
 }
