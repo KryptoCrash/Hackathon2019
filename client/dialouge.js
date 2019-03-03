@@ -1,9 +1,9 @@
-export default function dialogue(str, scene, lastResult) {
+export default function dialogue(str, scene, lastResult, x, y) {
   if(lastResult){
   lastResult.destroy()
   }
   let text = scene.add
-    .text(scene.scale.width/3, (scene.scale.height*6)/9, str, {
+    .text(x, y, str, {
       font: "18px Roboto Condensed",
       fill: "#ffffff",
       padding: { x: 20, y: 10 },

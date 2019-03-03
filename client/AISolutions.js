@@ -8,17 +8,36 @@ export default class dialogueHandler {
     this.map = map;
     this.worldLayer = worldLayer;
     this.result;
+    this.dialogueLine;
   }
 
   update() {
     //start Time Counter
     this.time++;
-
+    dialogue(this.player.exp + " XP", this.scene, false, this.scene.scale.width/8, (this.scene.scale.height)/8);
     //check if player is next to game object while trying to check it
+    
+    
     this.checkObject("book");
     this.checkObject("bed");
+    this.checkObject('wash')
+    this.checkObject('eat')
   }
   checkObject(obj) {
+    var newExp = 0;
+    if (obj == 'book'){
+      this.dialogueLine = 'Do you want to study?'
+      newExp = 100
+    } else if (obj == 'bed'){
+      this.dialogueLine = 'Do you want to sleep?'
+      newExp = 10
+    } else if (obj == 'wash'){
+      this.dialogueLine = 'Do you want to wash up?'
+      newExp = 40
+    } else if (obj == 'eat'){
+      this.dialogueLine = 'Do you want to eat?'
+      newExp = 30
+    }
     var objs = this.worldLayer.filterTiles(
       tile => tile.properties.checkObject == obj
     );
@@ -30,10 +49,11 @@ export default class dialogueHandler {
 
       objs.forEach(tile => {
         if (playerCoor.y == tile.y && playerCoor.x - 1 == tile.x) {
-          dialogue("Do you want to read?", this.scene, this.result);
+          dialogue(this.dialogueLine, this.scene, this.result, this.scene.scale.width/3, (this.scene.scale.height*6)/9);
 
-          this.scene.input.keyboard.on("keydown_B", () => {
-            this.scene.cameras.main.fade();
+          this.scene.input.keyboard.on("keydown_Y", () => {
+            this.scene.input.keyboard.on('keyup_Y', () => {this.player.exp += newExp;
+            return})
           });
         }
       });
@@ -46,9 +66,10 @@ export default class dialogueHandler {
       );
       objs.forEach(tile => {
         if (playerCoor.y == tile.y && playerCoor.x + 1 == tile.x) {
-          dialogue("Do you want to read?", this.scene, this.result);
-          this.scene.input.keyboard.on("keydown_B", () => {
-            this.scene.cameras.main.fade();
+          dialogue(this.dialogueLine, this.scene, this.result, this.scene.scale.width/3, (this.scene.scale.height*6)/9);
+          this.scene.input.keyboard.on("keydown_Y", () => {
+            this.scene.input.keyboard.on('keyup_Y', () => {this.player.exp += newExp;
+            return})
           });
         }
       });
@@ -60,9 +81,10 @@ export default class dialogueHandler {
       );
       objs.forEach(tile => {
         if (playerCoor.x == tile.x && playerCoor.y - 1 == tile.y) {
-          dialogue("Do you want to read?", this.scene, this.result);
-          this.scene.input.keyboard.on("keydown_B", () => {
-            this.scene.cameras.main.fade();
+          dialogue(this.dialogueLine, this.scene, this.result, this.scene.scale.width/3, (this.scene.scale.height*6)/9);
+          this.scene.input.keyboard.on("keydown_Y", () => {
+            this.scene.input.keyboard.on('keyup_Y', () => {this.player.exp += newExp;
+            return})
           });
         }
       });
@@ -74,9 +96,10 @@ export default class dialogueHandler {
       );
       objs.forEach(tile => {
         if (playerCoor.x == tile.x && playerCoor.y + 1 == tile.y) {
-          dialogue("Do you want to read?", this.scene, this.result);
-          this.scene.input.keyboard.on("keydown_B", () => {
-            this.scene.cameras.main.fade();
+          dialogue(this.dialogueLine, this.scene, this.result, this.scene.scale.width/3, (this.scene.scale.height*6)/9);
+          this.scene.input.keyboard.on("keydown_Y", () => {
+            this.scene.input.keyboard.on('keyup_Y', () => {this.player.exp += newExp;
+            return}); //Ends the thingy
           });
         }
       });

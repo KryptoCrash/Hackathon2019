@@ -4,6 +4,7 @@ export default class Player {
     this.sprite = scene.physics.add.sprite(x, y, "player");
     this.direction;
     this.anims = this.scene.anims;
+    this.exp = 0;
     this.anims.create({
       key: "player-idle",
       frames: this.anims.generateFrameNumbers("player", { start: 0, end: 0 }),
