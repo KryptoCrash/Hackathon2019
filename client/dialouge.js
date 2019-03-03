@@ -2,7 +2,7 @@ export default function dialogue(str, scene, lastResult, x, y) {
   if(lastResult){
   lastResult.destroy()
   }
-  let text = scene.add
+  var text = scene.add
     .text(x, y, str, {
       font: "18px Roboto Condensed",
       fill: "#ffffff",
@@ -10,4 +10,5 @@ export default function dialogue(str, scene, lastResult, x, y) {
       backgroundColor: "#000000"
     })
     .setScrollFactor(0)
+
 }

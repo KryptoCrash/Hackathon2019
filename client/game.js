@@ -14,7 +14,6 @@ export default class Game extends Phaser.Scene {
 
   create() {
     const map = this.make.tilemap({ key: "map" });
-
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     const tileset = map.addTilesetImage("house_inside", "tiles");
@@ -32,10 +31,10 @@ export default class Game extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     // Phaser supports multiple cameras, but you can access the default camera like this:
     const camera = this.cameras.main;
+    camera.startFollow(this.player.sprite);
+    camera.setZoom(1.8)
     this.dH = new dialogueHandler(this, this.player, map, worldLayer);
     
-    camera.startFollow(this.player.sprite);
-    camera.setZoom(1.3)
     // Set up the arrows to control the camera
     this.physics.add.collider(this.player.sprite, worldLayer);
 
